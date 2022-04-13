@@ -542,12 +542,15 @@ function echec_et_mat(){
             p.frame = cases_possibles_deplacement[i].id
             if(echec_toutes_directions(p, pion_cible)){
                 p.frame = fr
+                console.log("ca va ?")
                 return
             }
         }
         p.frame = fr
         if(cases_possibles_deplacement_roi.length == 0){
+            console.log("hoho")
             if(!echec_toutes_directions(pions_echec[0], petit_echec)){
+                console.log("ririri")
                 if(tour % 2 == 0){
                     gagner('b')
                 }
@@ -601,6 +604,7 @@ function echec(roi, liste){
 	}
 }
 
+// true si le pion met le roi en echec, false si il ne le met pas en echec
 function petit_echec(roi, liste){
 	for(let i = 1; i < liste.length; i++){
 		if(liste[i].pion){
@@ -613,6 +617,7 @@ function petit_echec(roi, liste){
 }
 
 function met_en_echec(roi, frame, dir){
+    console.log(roi)
 	if(dir == "(c)" && frame.pion.id[1] == "c"){
         return true
     }
@@ -641,7 +646,7 @@ function met_en_echec(roi, frame, dir){
     }
     if("(hd)(db)(bg)(gh)".includes(dir)){
         if(ecart[0] == 1  && (ecart[1] == 1 || ecart[1] == -1) && (frame.pion.id[0] == 'n' || frame.pion.id[1] == 'r')){
-            if(frame.pion.id[1] == 'r'){
+            if(frame.pion.id[1] == 'r' && roi.id[1] == 'r'){
                 return true
             }
             if(met_en_echec.caller.name != "pion_cible" && frame.pion.id[1] == 'p'){
@@ -673,6 +678,9 @@ function echec_toutes_directions(pion, fonction){
             k += 1
         }
         if(fonction(pion, liste)){
+            if(echec_toutes_directions.caller.name == "echec_et_mat"){
+                console.log(true, pion, liste)
+            }
             return true
         }
     }
@@ -715,11 +723,11 @@ function echec_gros(pion){
     }
     pion.frame = frame_origin.id
     frame_origin.pion = pion
-    // console.log("tour", tour)
-    // console.log("pions_echec :", pions_echec)
-    // console.log("cases_possibles_deplacement :", cases_possibles_deplacement)
-    // console.log("cases_possibles_deplacement_roi :", cases_possibles_deplacement_roi)
-    // console.log("")
+    console.log("tour", tour)
+    console.log("pions_echec :", pions_echec)
+    console.log("cases_possibles_deplacement :", cases_possibles_deplacement)
+    console.log("cases_possibles_deplacement_roi :", cases_possibles_deplacement_roi)
+    console.log("")
 }
 
 // lance un son aléatoire si le roi est mis en echec
