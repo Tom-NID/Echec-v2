@@ -22,7 +22,7 @@ var pion_selection = null
 var pion_adverses = []
 var pions_echec = []
 var cases_possibles_deplacement = []
-var cases_possibles_deplacement_roi = []
+var cases_possibles_deplacement_roi = [0]
 var tour = 0
 var QI_blanc = 100
 var QI_noir = 100
@@ -371,7 +371,7 @@ function verif_case_echec(pion, i1, i2){
 	let frame = document.getElementById(String(Number(pion.frame[0]) + i1 + String(Number(pion.frame[1]) + i2)))
     let len = pions_echec.length
     if(pion.id[1] == "r"){
-        if((len == 0 && cases_possibles_deplacement_roi.length == 0 )|| cases_possibles_deplacement_roi.includes(frame)){
+        if((len == 0 && cases_possibles_deplacement_roi.length == 1 )|| cases_possibles_deplacement_roi.includes(frame)){
             return true
         }
         return false
@@ -532,6 +532,15 @@ function pion_ennemi(pion, i1, i2){
 }
 
 function echec_et_mat(){
+    console.log("enotdhaunaoedu")
+    if(pions_echec.length == 0 && cases_possibles_deplacement_roi[0] == 0 && cases_possibles_deplacement_roi.length == 1){
+        if(tour % 2 == 0){
+            gagner('b')
+        }
+        else{
+            gagner('n')
+        }
+    }
     if(pions_echec.length == 1){
         let p = document.getElementById('nr')
         if(tour % 2 == 0){
@@ -547,7 +556,7 @@ function echec_et_mat(){
             }
         }
         p.frame = fr
-        if(cases_possibles_deplacement_roi.length == 0){
+        if(cases_possibles_deplacement_roi.length == 1){
             console.log("hoho")
             if(!echec_toutes_directions(pions_echec[0], petit_echec)){
                 console.log("ririri")
@@ -702,7 +711,7 @@ function echec_toutes_directions(pion, fonction){
 function echec_gros(pion){
     pions_echec = []
     cases_possibles_deplacement = []
-    cases_possibles_deplacement_roi = []
+    cases_possibles_deplacement_roi = [0]
     echec_toutes_directions(pion, echec)
     let pos = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
     let frame_origin = document.getElementById(pion.frame)
@@ -717,6 +726,9 @@ function echec_gros(pion){
                     cases_possibles_deplacement_roi.push(document.getElementById(pion.frame))
                 }
                 frame.pion = null
+            }
+            else{
+                cases_possibles_deplacement_roi[0] += 1
             }
             pion.frame = frame_origin.id
         }
@@ -927,7 +939,7 @@ function rejouer(){
     }
     pions_echec = []
     cases_possibles_deplacement = []
-    cases_possibles_deplacement_roi = []
+    cases_possibles_deplacement_roi = [0]
     Initialisation()
 }
 
